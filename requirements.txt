@@ -1,0 +1,9 @@
+git+https://github.com/rrader/aio_manager.git@master#egg=aio_manager
+aiohttp==0.20.2
+chardet==2.3.0
+colorama==0.3.6
+pybars3==0.9.1
+PyMeta3==0.5.1
+python-dateutil==2.4.2
+six==1.10.0
+wheel==0.26.0
