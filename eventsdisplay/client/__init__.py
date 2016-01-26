@@ -23,9 +23,14 @@ class EventsServiceAPI:
             sorting = ''
         if not query:
             query = ''
-        async with self.session.get('{}/events?count={}&offset={}&order_by={}&query={}'.
+        params = {'count': count,
+                  'offset': offset,
+                  'order_by': sorting,
+                  'query': query}
+        async with self.session.get('{}/events'.
                                           format(self.url, count, offset, sorting, query),
-                                          headers={'Client-Key': api_key}) as response:
+                                          headers={'Client-Key': api_key},
+                                          params=params) as response:
             await self.process_errors(response)
             data = await response.json()
         data['events'] = [self.prepare_event(event) for event in data.pop('events')]

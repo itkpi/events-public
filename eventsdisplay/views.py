@@ -82,18 +82,34 @@ async def make_template(request, template_name, context):
     return html
 
 
-async def index(request):
+async def events_list(request, sorting, query):
     page = int(request.match_info.get('page', 1))
     offset = (page - 1) * EVENTS_PER_PAGE
 
     context = default_context()
     events = await request.app['events_api'].get_events(EVENTS_API_KEY, offset, EVENTS_PER_PAGE,
-                                                        sorting='-when_start')
+                                                        sorting=sorting,
+                                                        query=query)
     context.update(events)
     context['page'] = events['offset'] // EVENTS_PER_PAGE + 1
     context['next_page'] = context['page'] + 1
     context['prev_page'] = context['page'] - 1
+    return context
 
+
+async def index(request):
+    today = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d")
+    query = "when_start >= '{}'".format(today)
+    context = await events_list(request, 'when_start', query)
+    html = await make_template(request, "events", context)
+    return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
+
+
+async def archive(request):
+    today = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d")
+    query = "when_start < '{}'".format(today)
+    context = await events_list(request, '-when_start', query)
+    context['archive'] = '/archive'
     html = await make_template(request, "events", context)
     return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
 
@@ -111,5 +127,5 @@ async def event(request):
 
 def default_context():
     context = {}
-    context['hideTags'] = 'yes'
+    context['events_site'] = 'yes'
     return context
