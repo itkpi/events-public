@@ -131,4 +131,6 @@ async def event(request):
 def default_context():
     context = {}
     context['events_site'] = 'yes'
+    context['body_class'] = 'home-template'
+    context['meta_title'] = 'Events@ІТ КПІ'
     return context
