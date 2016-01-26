@@ -15,7 +15,6 @@ def _asset(options, val, *args, **kwargs):
     return "/assets/{}".format(val)
 
 def _date(options, format, *args, **kwargs):
-    print(options.context.keys())
     if options['when_start']:
         dt = parse(options['when_start'])
     else:
@@ -26,6 +25,10 @@ def _date(options, format, *args, **kwargs):
     date = date.replace("MMMM", str(dt.month))
     date = date.replace("MM", str(dt.month))
     return date
+
+def _strftime(options, source, format, *args, **kwargs):
+    dt = parse(options[source])
+    return datetime.datetime.strftime(dt, format)
 
 def _excerpt(options, words, *args, **kwargs):
     text = options["agenda"]
@@ -60,7 +63,11 @@ class TemplateLoader:
         return partials
 
     def helpers(self):
-        return {"asset": _asset, "date": _date, "excerpt": _excerpt}
+        return {"asset": _asset,
+                "date": _date,
+                "excerpt": _excerpt,
+                "strftime": _strftime,
+                }
 
 
 async def make_template(request, template_name, context):

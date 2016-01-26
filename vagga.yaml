@@ -1,5 +1,5 @@
 containers:
-  python:
+  eventsdisplay:
     setup:
     - !Ubuntu trusty
     - !AptTrust keys: [5BB92C09DB82666C]
@@ -11,5 +11,5 @@ containers:
 
 commands:
   eventsdisplay: !Command
-    container: python
+    container: eventsdisplay
     run: python3.5 manage.py run_server --port 60500
