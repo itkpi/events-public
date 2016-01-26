@@ -10,3 +10,4 @@ TEMPLATES_DIR = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__f
 ASSETS_DIR = os.path.abspath(os.path.join(TEMPLATES_DIR, 'assets'))
 
 EVENTS_PER_PAGE = 5
+DEBUG = os.environ.get('DEBUG')

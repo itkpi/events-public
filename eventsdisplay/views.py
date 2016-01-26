@@ -6,13 +6,15 @@ import pybars
 from aiohttp.web_reqrep import Response
 from dateutil.parser import parse
 
-from eventsdisplay.settings import EVENTS_API_KEY, EVENTS_PER_PAGE
+from eventsdisplay.settings import EVENTS_API_KEY, EVENTS_PER_PAGE, DEBUG
 
 INCLUDE_COMMENT = re.compile(r"{{!<[ ]*([^}]+)}}")
 
 
 def _asset(options, val, *args, **kwargs):
-    return "/assets/{}".format(val)
+    if DEBUG:
+        prefix = r'/events'
+    return prefix + "/assets/{}".format(val)
 
 def _date(options, format, *args, **kwargs):
     if options['when_start']:

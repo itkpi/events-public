@@ -13,3 +13,5 @@ commands:
   eventsdisplay: !Command
     container: eventsdisplay
     run: python3.5 manage.py run_server --port 60500
+    environ:
+      DEBUG: yes
