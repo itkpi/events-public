@@ -10,7 +10,7 @@ containers:
     - !Py3Requirements "requirements.txt"
 
 commands:
-  eventsdisplay: !Command
+  run: !Command
     container: eventsdisplay
     run: python3.5 manage.py run_server --port 60500
     environ:
