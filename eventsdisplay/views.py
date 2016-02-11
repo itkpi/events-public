@@ -35,7 +35,7 @@ def _strftime(options, source, format, *args, **kwargs):
 
 def _excerpt(options, words, *args, **kwargs):
     text = options["agenda"]
-    text = re.sub('<[^<]+?>', '', text)
+    text = re.sub('<[^<]+?>', ' ', text)
     if text:
         text = ' '.join(text.split()[:int(words)])
     return text
