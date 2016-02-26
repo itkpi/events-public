@@ -174,6 +174,9 @@ async def suggest_save(request):
         suggested = api.suggest(checked)
         return HTTPFound(request.app.router['edit_suggested'].url(parts={"secret": suggested['secret']}))
 
+    for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
+        context["is_{}".format(level)] = checked.get('level') == level
+
     html = await make_template(request, "suggest_event", context)
     return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
 
@@ -185,8 +188,11 @@ async def suggest_edit(request):
 
     api = EventsMonkey(EVENTSMONKEY_URL)
     data = api.get(secret)
-    data['include_time'] = not data.pop('only_date')
     context.update(data)
+    context['edit'] = "{}://{}".format(request.scheme, request.host, request.path_qs)
+
+    for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
+        context["is_{}".format(level)] = data.get('level') == level
 
     html = await make_template(request, "suggest_event", context)
     return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
@@ -199,14 +205,15 @@ async def suggest_edit_save(request):
 
     data = await request.post()
     context.update(data)
+    context['edit'] = "{}://{}".format(request.scheme, request.host, request.path_qs)
+    for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
+        context["is_{}".format(level)] = data.get('level') == level
 
     checked = None
     try:
         checked = EVENT_SUGGESTION_TRAFARET.check(data)
     except t.DataError as e:
-        context['error'] = e.error
-        print(e.error)
-    print(checked)
+        context['error'] = [{"key": k, "error": str(v)} for k,v in e.error.items()]
 
     if checked:
         checked['team'] = EVENTSMONKEY_TEAM
@@ -216,6 +223,8 @@ async def suggest_edit_save(request):
 
     html = await make_template(request, "suggest_event", context)
     return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
+
+# p.s. I know, it's ugliest code I ever wrote, but I need to do it quickly
 
 
 def default_context():
