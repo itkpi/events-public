@@ -5,7 +5,7 @@ from aiohttp.web import Application
 from eventsdisplay.client import EventsServiceAPI
 from eventsdisplay.settings import EVENTS_SERVICE_URL, TEMPLATES_DIR, ASSETS_DIR, DEBUG
 
-from eventsdisplay.views import index, event, archive, TemplateLoader
+from eventsdisplay.views import index, event, archive, suggest, suggest_save, suggest_edit, suggest_edit_save, TemplateLoader
 
 
 def build_application():
@@ -22,6 +22,10 @@ def build_application():
     app.router.add_route('GET', prefix + r'/event/{event:\d+}/', event)
     app.router.add_route('GET', prefix + r'/archive/', archive)
     app.router.add_route('GET', prefix + r'/archive/page/{page:\d+}/', archive)
+    app.router.add_route('GET', prefix + r'/suggest/', suggest)
+    app.router.add_route('POST', prefix + r'/suggest/', suggest_save)
+    app.router.add_route('GET', prefix + r'/suggest/{secret:.+}', suggest_edit, name="edit_suggested")
+    app.router.add_route('POST', prefix + r'/suggest/{secret:.+}', suggest_edit_save)
     app.router.add_static(prefix + r'/assets/', ASSETS_DIR)
     return app
 

@@ -11,3 +11,6 @@ ASSETS_DIR = os.path.abspath(os.path.join(TEMPLATES_DIR, 'assets'))
 
 EVENTS_PER_PAGE = 10
 DEBUG = os.environ.get('DEBUG')
+
+EVENTSMONKEY_TEAM = os.environ.get('EVENTSMONKEY_TEAM', 'default')
+EVENTSMONKEY_URL = os.environ.get('EVENTSMONKEY_URL', 'http://127.0.0.1:5001')
