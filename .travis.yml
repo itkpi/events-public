@@ -1,7 +1,7 @@
-sudo: required
+sudo: false
 dist: trusty
 install:
-- "curl http://files.zerogw.com/vagga/vagga-install-testing.sh | sh"
+- "curl -O vagga.tar.xz http://files.zerogw.com/vagga/vagga-0.4.1.tar.xz; tar xf vagga.tar.xz"
 - "echo ubuntu-mirror: http://mirrors.us.kernel.org/ubuntu/ > ~/.vagga.yaml"
 - "echo alpine-mirror: http://mirrors.gigenet.com/alpinelinux/ >> ~/.vagga.yaml"
 script:
