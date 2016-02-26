@@ -1,5 +1,4 @@
 sudo: false
-dist: trusty
 env:
   - PATH=$PATH:~/vagga
 install:
