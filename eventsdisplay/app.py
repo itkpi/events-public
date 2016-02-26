@@ -13,9 +13,7 @@ def build_application():
     app = Application(loop=loop)
     loop.run_until_complete(setup_events(app))
 
-    prefix = r''
-    if DEBUG:
-        prefix = r'/events'
+    prefix = r'/events'
 
     app.router.add_route('GET', prefix + r'/', index)
     app.router.add_route('GET', prefix + r'/page/{page:\d+}/', index)

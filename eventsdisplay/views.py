@@ -15,9 +15,7 @@ INCLUDE_COMMENT = re.compile(r"{{!<[ ]*([^}]+)}}")
 
 
 def _asset(options, val, *args, **kwargs):
-    prefix = r''
-    if DEBUG:
-        prefix = r'/events'
+    prefix = r'/events'
     return prefix + "/assets/{}".format(val)
 
 def _date(options, format, *args, **kwargs):
