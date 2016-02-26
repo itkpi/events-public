@@ -140,9 +140,8 @@ async def suggest(request):
 EVENT_SUGGESTION_TRAFARET = t.Dict({
     'title': t.String,
     'agenda': t.String,
-    'social': t.String(allow_blank=True),
     'place': t.String(allow_blank=True),
-    'registration_url': t.URL(allow_blank=True) | t.Null,
+    'registration_url': t.URL(),
     'image_url': t.URL(allow_blank=True) | t.String(max_length=0, allow_blank=True),
     'level': t.Enum('NONE', 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR'),
     'when_start': t.String,
@@ -164,9 +163,7 @@ async def suggest_save(request):
     try:
         checked = EVENT_SUGGESTION_TRAFARET.check(data)
     except t.DataError as e:
-        context['error'] = e.error
-        print(e.error)
-    print(checked)
+        context['error'] = [{"key": k, "error": str(v)} for k,v in e.error.items()]
 
     if checked:
         checked['team'] = EVENTSMONKEY_TEAM
@@ -175,7 +172,8 @@ async def suggest_save(request):
         return HTTPFound(request.app.router['edit_suggested'].url(parts={"secret": suggested['secret']}))
 
     for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
-        context["is_{}".format(level)] = checked.get('level') == level
+        context["is_{}".format(level)] = data.get('level') == level
+    context['only_date'] = not data.get('include_time')
 
     html = await make_template(request, "suggest_event", context)
     return Response(body=html, headers={'Content-type': 'text/html; charset=utf-8'})
