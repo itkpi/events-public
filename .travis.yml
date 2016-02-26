@@ -1,7 +1,9 @@
 sudo: false
 dist: trusty
+env:
+  - PATH=~/
 install:
-- "curl http://files.zerogw.com/vagga/vagga-0.4.1.tar.xz > vagga.tar.xz; tar xf vagga.tar.xz"
+- "curl http://files.zerogw.com/vagga/vagga-0.4.1.tar.xz > /opt/vagga.tar.xz; cd /opt/; tar xf vagga.tar.xz"
 - "echo ubuntu-mirror: http://mirrors.us.kernel.org/ubuntu/ > ~/.vagga.yaml"
 - "echo alpine-mirror: http://mirrors.gigenet.com/alpinelinux/ >> ~/.vagga.yaml"
 script:

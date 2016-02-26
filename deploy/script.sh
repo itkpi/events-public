@@ -11,10 +11,10 @@ echo $container >> $INFO_FILENAME
 echo "revision: `git rev-parse HEAD`" >> $INFO_FILENAME
 git status >> $INFO_FILENAME
 
-vagga _build ${container}
+/opt/vagga/vagga _build ${container}
 cp -R * .vagga/${container}/work/
 echo nameserver 8.8.8.8 > .vagga/${container}/etc/resolv.conf
 echo 127.0.0.1 localhost > .vagga/${container}/etc/hosts
-vagga _pack_image ${container} | gzip > $TAR_FILENAME
+/opt/vagga/vagga _pack_image ${container} | gzip > $TAR_FILENAME
 
 echo Build finished `date` >> $INFO_FILENAME
