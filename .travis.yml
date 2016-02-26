@@ -3,7 +3,7 @@ dist: trusty
 env:
   - PATH=$PATH:~/vagga
 install:
-- "curl http://files.zerogw.com/vagga/vagga-0.4.1.tar.xz > ~/vagga.tar.xz; cd ~; tar xf vagga.tar.xz; cd -"
+- "curl http://files.zerogw.com/vagga/vagga-0.4.1-130-g6364f8f.tar.xz > ~/vagga.tar.xz; cd ~; tar xf vagga.tar.xz; cd -"
 - "echo ubuntu-mirror: http://mirrors.us.kernel.org/ubuntu/ > ~/.vagga.yaml"
 - "echo alpine-mirror: http://mirrors.gigenet.com/alpinelinux/ >> ~/.vagga.yaml"
 script:
