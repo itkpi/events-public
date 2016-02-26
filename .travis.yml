@@ -1,7 +1,7 @@
 sudo: false
 dist: trusty
 env:
-  - PATH=~/
+  - PATH=$PATH:/opt/vagga
 install:
 - "curl http://files.zerogw.com/vagga/vagga-0.4.1.tar.xz > /opt/vagga.tar.xz; cd /opt/; tar xf vagga.tar.xz"
 - "echo ubuntu-mirror: http://mirrors.us.kernel.org/ubuntu/ > ~/.vagga.yaml"
