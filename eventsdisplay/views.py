@@ -187,7 +187,7 @@ async def suggest_edit(request):
     api = EventsMonkey(EVENTSMONKEY_URL)
     data = api.get(secret)
     context.update(data)
-    context['edit'] = "{}://{}".format(request.scheme, request.host, request.path_qs)
+    context['edit'] = "{}://{}{}".format(request.scheme, request.host, request.path_qs)
 
     for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
         context["is_{}".format(level)] = data.get('level') == level
@@ -203,7 +203,7 @@ async def suggest_edit_save(request):
 
     data = await request.post()
     context.update(data)
-    context['edit'] = "{}://{}".format(request.scheme, request.host, request.path_qs)
+    context['edit'] = "{}://{}{}".format(request.scheme, request.host, request.path_qs)
     for level in 'TRAINEE', 'JUNIOR', 'MIDDLE', 'SENIOR':
         context["is_{}".format(level)] = data.get('level') == level
 
