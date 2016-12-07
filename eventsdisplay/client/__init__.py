@@ -27,29 +27,31 @@ class EventsServiceAPI:
                   'offset': offset,
                   'order_by': sorting,
                   'query': query}
-        async with self.session.get('{}/events'.
-                                          format(self.url, count, offset, sorting, query),
-                                          headers={'Client-Key': api_key},
-                                          params=params) as response:
-            await self.process_errors(response)
+        url = '{}/events'.format(self.url, count, offset, sorting, query)
+        async with self.session.get(url,
+                                    headers={'Client-Key': api_key},
+                                    params=params) as response:
+            await self.process_errors(url, response)
             data = await response.json()
         data['events'] = [self.prepare_event(event) for event in data.pop('events')]
         return data
 
     async def get_event(self, api_key, id_):
-        async with self.session.get('{}/events/{}'.
-                                    format(self.url, id_),
+        url = '{}/events/{}'.format(self.url, id_)
+        async with self.session.get(url,
                                     headers={'Client-Key': api_key}) as response:
-            await self.process_errors(response)
+            await self.process_errors(url, response)
             data = await response.json()
         return self.prepare_event(data)
 
-    async def process_errors(self, response):
+    async def process_errors(self, url, response):
         if response.status > 299:
             if response.status == 400:
                 json = await response.json()
                 raise EventsServiceAPIError(['{}: {} [api]'.format(k, v) for k, v in json.items()])
-            raise EventsServiceAPIError(['Events Service returned {} error'.format(response.status)])
+            raise EventsServiceAPIError(
+                ['Events Service returned {} error by url {}'.format(response.status, url)]
+            )
 
     def prepare_event(self, event):
         event['metainfo'] = json.loads(event.pop('metainfo'))
