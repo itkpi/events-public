@@ -27,7 +27,7 @@ class EventsServiceAPI:
                   'offset': offset,
                   'order_by': sorting,
                   'query': query}
-        url = '{}/events/'.format(self.url, count, offset, sorting, query)
+        url = '{}/events'.format(self.url, count, offset, sorting, query)
         async with self.session.get(url,
                                     headers={'Client-Key': api_key},
                                     params=params) as response:
